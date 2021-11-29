@@ -1,1 +1,44 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Nov 26 14:10:11 2020
 
+Programa de regresión lineal y cuadrática.
+
+Hecho por: Aranza Moreno Sarabia.
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+df = pd.read_csv("Datos.csv", delimiter=(","))
+df = pd.DataFrame(df)
+
+#Y=Ax+B#
+
+x = df[["Valor_1"]]
+y = df["Valor_2"]
+
+plt.scatter(x,y)
+plt.xlabel("Valor numero 1")
+plt.ylabel("Valor numero 2")
+plt.show()
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size = 0.20)
+regresion = linear_model.LinearRegression()
+
+regresion.fit(x_train, y_train)
+
+print("Precisión del modelo: ")
+print(regresion.score(x_train, y_train))
+
+Y_pred = regresion.predict(x_test)
+
+plt.scatter(x_train, y_train)
+plt.plot(x_test, Y_pred, color="blue", linewidth=3)
+plt.title("-Regresión lineal Simple-")
+plt.show()
+
+print("-Ecuación de la regresión-")
+print("Y = ", regresion.coef_, "X = ", regresion.intercept_)
